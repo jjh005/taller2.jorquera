@@ -16,7 +16,7 @@ public class Main {
 		
 		Ciudad randCity=cities.get(getNumeroAleatorio(0,n-1));
 		
-		System.out.println("Ciudad de Inicio Escogida: "+randCity.getNombre()+" id: "+randCity.getId());
+		System.out.println("\nCiudad de Inicio Escogida: "+randCity.getNombre()+" id: "+randCity.getId());
 		
 		cc.hillClimbing(randCity);
 		LinkedList<Ciudad> rutaf=cc.getRuta();
