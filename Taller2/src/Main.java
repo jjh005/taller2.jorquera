@@ -7,7 +7,7 @@ public class Main {
 		
 		//lienas de codigo que pida por consola el numero n de ciudades
 		
-		int n=3;
+		int n=4;
 		Ruta cc=new Ruta("ciudades.txt",n);
 		LinkedList<Ciudad> cities=cc.getCiudades();//son las ciudades que se usaran para crear la ruta
 		
@@ -18,16 +18,24 @@ public class Main {
 		
 		System.out.println("\nCiudad de Inicio Escogida: "+randCity.getNombre()+" id: "+randCity.getId());
 		
+		
+		
 		cc.hillClimbing(randCity);
 		LinkedList<Ciudad> rutaf=cc.getRuta();
 		
-		System.out.println(" dim ruta: "+cc.getRuta().size());
+		cc.printCiudades();
+		
 	
 		System.out.println("La ruta es: ");
 		for(int i=0;i<rutaf.size();i++) {
 			Ciudad c=rutaf.get(i);
 			System.out.println(c.getId());
 		}
+		
+		 System.out.println(cc.getCostos().toString());
+		System.out.println();
+		
+		//System.out.println(cc.generarStringRuta());
 	}
 	
 	public static int getNumeroAleatorio(int min, int max) {

@@ -13,7 +13,7 @@ public class Ruta {
 	private LinkedList<Ciudad> ciudades;
 	private int [][] costoDeCaminos;
 	private int costoTotal;
-	private int [] costos;
+	private LinkedList<Integer> costos;
 	private int cantCiudades;
 	
 	/**
@@ -29,13 +29,19 @@ public class Ruta {
 			this.costoTotal=0;
 			this.ruta=new LinkedList<>();
 			this.cantCiudades=this.ciudades.size();
+			this.costos=new LinkedList<>();
 			escribirMatriz();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	public void printCiudades() {
+		for(int i=0;i<this.cantCiudades;i++) {
+			Ciudad c=this.ciudades.get(i);
+			System.out.println(c.getId()+" "+c.getNombre());
+		}
+	}
 	private int[][] crearMatrizCostos(int n) {
 		int [][] matrizCosto=new int[n][n];
 		
@@ -167,15 +173,38 @@ public class Ruta {
 				int coste_i_j=this.costoDeCaminos[ciudadActual.getId()][i];
 				
 				if(coste_i_j<mejorCosto) {
-					mejorCosto=this.costoDeCaminos[ciudadActual.getId()][i];
+					mejorCosto=coste_i_j;
 					mejorCiudad=this.ciudades.get(i);
+					
 				}
 				
 			}
 		}
+		this.costos.addLast(mejorCosto);
+		
 		return mejorCiudad;
 	}
 
+	public String generarStringRuta() {
+		String camino="";
+		
+		int n=this.costos.size();
+		for(int i=0;i<this.cantCiudades;i++) {
+			Ciudad ci=this.ruta.get(i);
+			camino+="["+ci.getNombre()+" : "+ Integer.toString(ci.getId())+"]";
+			if(n==i) {
+				//se llego al limite de lista Costos
+				camino+="["+ci.getNombre()+" : "+Integer.toString(ci.getId())+"]";
+				
+			}else {
+				camino+="-->"+Integer.toString(this.costos.get(i))+"-->";
+				
+			}
+			
+		}
+		return camino;
+	}
+	
 	/**
 	 * @return the costoTotal
 	 */
@@ -215,13 +244,23 @@ public class Ruta {
 		return costoDeCaminos;
 	}
 
-
 	/**
 	 * @return the costos
 	 */
-	public int[] getCostos() {
+	public LinkedList<Integer> getCostos() {
 		return costos;
 	}
+
+	/**
+	 * @param costos the costos to set
+	 */
+	public void setCostos(LinkedList<Integer> costos) {
+		this.costos = costos;
+	}
+	
+	
+	
+	
 	
 	
 	
