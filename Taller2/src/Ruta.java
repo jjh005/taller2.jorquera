@@ -15,6 +15,7 @@ public class Ruta {
 	private int costoTotal;
 	private LinkedList<Integer> costos;
 	private int cantCiudades;
+	private String stringRuta;
 	
 	/**
 	 * Constructor de la clase Ruta
@@ -24,13 +25,13 @@ public class Ruta {
 	 */
 	public Ruta(String nombreArchivo,int numeroCiudades) {
 		try {
+			this.stringRuta="";
 			this.ciudades=crearLista(nombreArchivo,numeroCiudades);
 			this.costoDeCaminos=crearMatrizCostos(numeroCiudades);
 			this.costoTotal=0;
 			this.ruta=new LinkedList<>();
 			this.cantCiudades=this.ciudades.size();
 			this.costos=new LinkedList<>();
-			escribirMatriz();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -60,6 +61,33 @@ public class Ruta {
 	    return (int) ((Math.random() * (max - min)) + min);
 	}
 	
+	public void escribirRuta() {
+		  BufferedWriter bw = null;
+		  FileWriter fw = null;
+		    try {
+		    	System.out.print("\nGenerando Archivo 'ruta.txt'");
+		    	String ruta = "ruta.txt";
+		    	
+		    	fw=new FileWriter(ruta);
+		    	bw=new BufferedWriter(fw);
+		    	 bw.write(this.stringRuta);
+		    	
+		    } catch (Exception e) {
+		      System.out.println("Matrix is empty!!");
+		    }finally{
+		    	try {
+		    		if (bw != null)
+		                bw.close();
+		            if (fw != null)
+		                fw.close();
+		    	}catch (IOException ex){
+		    		ex.printStackTrace();
+		    		
+		    	}
+		    	
+		    }
+	}
+	
 	public void escribirMatriz() {
 		
 		int [][] m=this.costoDeCaminos;
@@ -78,35 +106,26 @@ public class Ruta {
 		      String str = "";
 		      
 		      for (int w = 0; w < columns; w++) {
-		        str += "\t" + (w + 1);
-		        //bw.write("\t" + Integer.toString(w + 1));
+		        str += "\t" + (w);
 		      }
 		      str += "\n";
-		      //bw.write("\n");
 		      
 		      //guiones bajo los numeros
 		      for (int w = 0; w < columns; w++) {
 		        str += "\t-";
-		        //bw.write("\t-");
 		      }
 		      
 		      str += "\n";
-		      //bw.write("\n");
 		      
-		      str += "1|\t";
-		      //bw.write("1|\t");
+		      str += "0|\t";
 		      for (int i = 0; i < rows; i++) {
 
 		        for (int j = 0; j < columns; j++) {
 		          str += m[i][j] + "\t";
-		          //bw.write(Integer.toString(m[i][j]) + "\t");
 		        }
-		        //bw.write("|\n");
 		        
-		        
-		        //System.out.println(str + "|");
 		        bw.write(str+"\n");
-		        str = (i + 2) + "|\t";
+		        str = (i+1) + "|\t";
 		      }
 	
 		      System.out.print("..... Listo!\n");
@@ -175,34 +194,33 @@ public class Ruta {
 				if(coste_i_j<mejorCosto) {
 					mejorCosto=coste_i_j;
 					mejorCiudad=this.ciudades.get(i);
-					
 				}
-				
 			}
 		}
-		this.costos.addLast(mejorCosto);
 		
+		this.costos.addLast(mejorCosto);
+		this.costoTotal+=mejorCosto;
 		return mejorCiudad;
 	}
 
 	public String generarStringRuta() {
-		String camino="";
 		
 		int n=this.costos.size();
 		for(int i=0;i<this.cantCiudades;i++) {
 			Ciudad ci=this.ruta.get(i);
-			camino+="["+ci.getNombre()+" : "+ Integer.toString(ci.getId())+"]";
+			this.stringRuta+="["+ci.getNombre()+" : "+ Integer.toString(ci.getId())+"]";
 			if(n==i) {
 				//se llego al limite de lista Costos
-				camino+="["+ci.getNombre()+" : "+Integer.toString(ci.getId())+"]";
+				//camino+="["+ci.getNombre()+" : "+Integer.toString(ci.getId())+"]";
 				
 			}else {
-				camino+="-->"+Integer.toString(this.costos.get(i))+"-->";
+				this.stringRuta+=" --> "+Integer.toString(this.costos.get(i))+" --> ";
 				
 			}
 			
 		}
-		return camino;
+		
+		return this.stringRuta;
 	}
 	
 	/**
@@ -257,6 +275,14 @@ public class Ruta {
 	public void setCostos(LinkedList<Integer> costos) {
 		this.costos = costos;
 	}
+
+	/**
+	 * @return the stringRuta
+	 */
+	public String getStringRuta() {
+		return stringRuta;
+	}
+	
 	
 	
 	

@@ -1,13 +1,20 @@
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Main {
 
+
 	public static void main(String[] args) {
 		
-		//lienas de codigo que pida por consola el numero n de ciudades
+		//lineas de codigo que pida por consola el numero n de ciudades
+		Scanner reader = new Scanner(System.in);
+		System.out.println("Ingresa cantidad de ciudades: ");
+		int n = reader.nextInt();
 		
-		int n=4;
 		Ruta cc=new Ruta("ciudades.txt",n);
 		LinkedList<Ciudad> cities=cc.getCiudades();//son las ciudades que se usaran para crear la ruta
 		
@@ -16,26 +23,34 @@ public class Main {
 		
 		Ciudad randCity=cities.get(getNumeroAleatorio(0,n-1));
 		
-		System.out.println("\nCiudad de Inicio Escogida: "+randCity.getNombre()+" id: "+randCity.getId());
+		System.out.println("\nCiudad de Inicio Escogida: "+randCity.getNombre()+", id: "+randCity.getId());
 		
 		
 		
-		cc.hillClimbing(randCity);
-		LinkedList<Ciudad> rutaf=cc.getRuta();
+		Date date = new Date();
+	    //obtener la hora y salida por pantalla con formato, para mostrar el tiempo de ejecucion de Hill-Climbing
+	    DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+	    System.out.println("Timpo de inicio Hill-Climbing: "+hourFormat.format(date));
+	    
 		
-		cc.printCiudades();
 		
-	
-		System.out.println("La ruta es: ");
-		for(int i=0;i<rutaf.size();i++) {
-			Ciudad c=rutaf.get(i);
-			System.out.println(c.getId());
-		}
+	    long tiempo;
 		
-		 System.out.println(cc.getCostos().toString());
-		System.out.println();
+	    long startTime = System.nanoTime();
+	    
+	    cc.hillClimbing(randCity);//***Aqui se ejecuta Hill-Climbing
+	    
+	    long endTime = System.nanoTime();
+	    tiempo=(endTime-startTime);
+		System.out.println("\nLA RUTA ES:");
+		System.out.println(cc.generarStringRuta());
+		System.out.println("COSTO TOTAL DE LA RUTA: "+cc.getCostoTotal()+"\n");
 		
-		//System.out.println(cc.generarStringRuta());
+		System.out.println("Tiempo de finalizacion Hill-Climbing: "+hourFormat.format(date));
+		System.out.printf("Tiempo de Ejecucion Hill-climbing: "+ tiempo+" NanoSegundos\n"); 
+		cc.escribirMatriz();
+		cc.escribirRuta();
+		
 	}
 	
 	public static int getNumeroAleatorio(int min, int max) {
