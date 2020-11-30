@@ -42,14 +42,28 @@ public class Main {
 	    
 	    long endTime = System.nanoTime();
 	    tiempo=(endTime-startTime);
+	    //cc.getTiempoXIteracion().addFirst(Math.toIntExact(tiempo));
+	    
 		System.out.println("\nLA RUTA ES:");
 		System.out.println(cc.generarStringRuta());
 		System.out.println("COSTO TOTAL DE LA RUTA: "+cc.getCostoTotal()+"\n");
 		
 		System.out.println("Tiempo de finalizacion Hill-Climbing: "+hourFormat.format(date));
-		System.out.printf("Tiempo de Ejecucion Hill-climbing: "+ tiempo+" NanoSegundos\n"); 
+		if(tiempo<1000000000)
+			System.out.printf("Tiempo de Ejecucion Hill-climbing: "+ tiempo+" NanoSegundos\n");
+		else
+			System.out.printf("Tiempo de Ejecucion Hill-climbing: "+ tiempo/1000000000.0+" Segundos\n");
 		cc.escribirMatriz();
 		cc.escribirRuta();
+		
+		
+		/*
+		 * LinkedList<Integer> tiempos=cc.getTiempoXIteracion(); for(int
+		 * i=0;i<tiempos.size();i++) {
+		 * 
+		 * System.out.println(i+" "+tiempos.get(i)); }
+		 */
+		 
 		
 	}
 	
