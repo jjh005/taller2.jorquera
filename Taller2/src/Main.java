@@ -57,15 +57,20 @@ public class Main {
 			System.out.printf("Tiempo de Ejecucion Hill-climbing: "+ tiempo+" NanoSegundos\n");
 		else
 			System.out.printf("Tiempo de Ejecucion Hill-climbing: "+ tiempo/1000000000.0+" Segundos\n");
+		
 		cc.escribirMatriz();
 		cc.escribirRuta();
+		tiempoXIter(cc.getTiempoXIteracion());
+		
 		
 		
 		/*
-		 * LinkedList<Integer> tiempos=cc.getTiempoXIteracion(); for(int
-		 * i=0;i<tiempos.size();i++) {
 		 * 
-		 * System.out.println(i+" "+tiempos.get(i)); }
+		 * LinkedList<Integer> tiempos=cc.getTiempoXIteracion(); 
+		 * for(int i=0;i<tiempos.size();i++) {
+		 * 
+		 * System.out.println(i+" "+tiempos.get(i)); 
+		 * }
 		 */
 		 
 		
@@ -127,6 +132,34 @@ public class Main {
 	    return (int) ((Math.random() * (max - min)) + min);
 	}
 	
+	public static void tiempoXIter(LinkedList<Integer> tiempos) {
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+		try {
+		    String ruta = "tiemposxIter.txt";
+		    	
+		    fw=new FileWriter(ruta);
+		    bw=new BufferedWriter(fw);
+		    
+		    for(int i=0;i<tiempos.size();i++) {
+		    	bw.write(tiempos.get(i)+"\n");
+		    	
+		    }
+		     } catch (Exception e) {
+		    	 System.out.println("Matrix is empty!!");
+		    	 }finally{
+		    		 try {
+		    			 if (bw != null)
+		                 bw.close();
+		    			 if (fw != null)
+		                 fw.close();
+		    			 }catch (IOException ex){
+		    				 ex.printStackTrace();
+		    				 }
+		    		 }
+		}
+	}
 	
-}
+	
+
 
